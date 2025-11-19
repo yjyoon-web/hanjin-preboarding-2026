@@ -587,9 +587,58 @@ app.delete('/api/:type/:id/image', requireAuth, (req, res) => {
 });
 
 // 서버 시작
-app.listen(PORT, () => {
-    console.log(`==============================================`);
-    console.log(`한진 2026 신입사원 프리보딩 홈페이지`);
-    console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다`);
-    console.log(`==============================================`);
+// 서버 시작 시 데이터베이스 초기화
+async function initializeDatabase() {
+  try {
+    console.log('데이터베이스 초기화 시작...');
+    
+    // 방명록 테이블
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS guestbook (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        message TEXT NOT NULL,
+        images TEXT[],
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // 자기소개 테이블
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS introductions (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        department VARCHAR(100),
+        content TEXT NOT NULL,
+        images TEXT[],
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    // 공지사항 테이블
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS notices (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(200) NOT NULL,
+        content TEXT NOT NULL,
+        author VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    
+    console.log('✅ 데이터베이스 테이블 생성 완료!');
+  } catch (error) {
+    console.error('데이터베이스 초기화 오류:', error);
+  }
+}
+
+// 서버 시작
+app.listen(PORT, async () => {
+  console.log('==============================================');
+  console.log('한진 2026 신입사원 프리보딩 홈페이지');
+  console.log(`서버가 http://localhost:${PORT} 에서 실행 중입니다`);
+  console.log('==============================================');
+  
+  // 데이터베이스 초기화 실행
+  await initializeDatabase();
 });
