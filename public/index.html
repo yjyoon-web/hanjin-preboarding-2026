@@ -5,73 +5,118 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>한진 2026 신입사원 프리보딩</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <header>
+    <!-- 헤더 -->
+    <header class="header">
         <div class="container">
-            <div class="header-content">
-                <h1>한진 2026 신입사원 프리보딩</h1>
-            </div>
-            <nav>
-                <button class="nav-btn active" data-section="guestbook">방명록</button>
-                <button class="nav-btn" data-section="introductions">자기소개</button>
-                <button class="nav-btn" data-section="notices">공지사항</button>
+            <h1 class="logo">한진 2026 신입사원 프리보딩</h1>
+            <nav class="nav">
+                <button class="nav-btn active" onclick="showSection('guestbook')">
+                    <i class="fas fa-book"></i> 방명록
+                </button>
+                <button class="nav-btn" onclick="showSection('introductions')">
+                    <i class="fas fa-user-friends"></i> 자기소개
+                </button>
+                <button class="nav-btn" onclick="showSection('notices')">
+                    <i class="fas fa-bullhorn"></i> 공지사항
+                </button>
             </nav>
         </div>
     </header>
 
-    <main class="container">
-        <!-- 방명록 섹션 -->
-        <section id="guestbook" class="section active">
-            <h2>방명록</h2>
-            <div class="write-form">
-                <input type="text" id="guestbook-name" placeholder="이름" required>
-                <textarea id="guestbook-message" placeholder="메시지를 입력하세요..." required></textarea>
-                <div class="file-input-wrapper">
-                    <label for="guestbook-images" class="file-label">
-                        📷 이미지 선택 (최대 5장)
-                    </label>
-                    <input type="file" id="guestbook-images" accept="image/*" multiple>
-                    <div id="guestbook-preview" class="image-preview"></div>
+    <!-- 메인 컨텐츠 -->
+    <main class="main-content">
+        <div class="container">
+            <!-- 방명록 섹션 -->
+            <section id="guestbook" class="section active">
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> 방명록</h2>
+                    <p>첫 만남의 인사를 나눠보세요</p>
                 </div>
-                <button onclick="submitGuestbook()" class="submit-btn">작성하기</button>
-            </div>
-            <div id="guestbook-list" class="posts-list"></div>
-        </section>
 
-        <!-- 자기소개 섹션 -->
-        <section id="introductions" class="section">
-            <h2>자기소개</h2>
-            <div class="write-form">
-                <input type="text" id="intro-name" placeholder="이름" required>
-                <input type="text" id="intro-department" placeholder="부서 (선택사항)">
-                <textarea id="intro-content" placeholder="자기소개를 입력하세요..." required></textarea>
-                <div class="file-input-wrapper">
-                    <label for="intro-images" class="file-label">
-                        📷 이미지 선택 (최대 5장)
-                    </label>
-                    <input type="file" id="intro-images" accept="image/*" multiple>
-                    <div id="intro-preview" class="image-preview"></div>
+                <div class="write-card">
+                    <h3>새 글 작성</h3>
+                    <form id="guestbook-form">
+                        <input type="text" id="guestbook-name" placeholder="이름" required>
+                        <textarea id="guestbook-message" placeholder="메시지를 입력하세요..." rows="4" required></textarea>
+                        
+                        <div class="file-upload">
+                            <label for="guestbook-images" class="file-label">
+                                <i class="fas fa-camera"></i> 사진 첨부 (최대 5장)
+                            </label>
+                            <input type="file" id="guestbook-images" accept="image/*" multiple>
+                        </div>
+                        <div id="guestbook-preview" class="image-preview"></div>
+                        
+                        <button type="button" onclick="submitGuestbook()" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> 작성하기
+                        </button>
+                    </form>
                 </div>
-                <button onclick="submitIntroduction()" class="submit-btn">작성하기</button>
-            </div>
-            <div id="introductions-list" class="posts-list"></div>
-        </section>
 
-        <!-- 공지사항 섹션 -->
-        <section id="notices" class="section">
-            <h2>공지사항</h2>
-            <div class="write-form">
-                <input type="text" id="notice-title" placeholder="제목" required>
-                <textarea id="notice-content" placeholder="공지사항 내용을 입력하세요..." required></textarea>
-                <input type="text" id="notice-author" placeholder="작성자" required>
-                <button onclick="submitNotice()" class="submit-btn">작성하기</button>
-            </div>
-            <div id="notices-list" class="posts-list"></div>
-        </section>
+                <div id="guestbook-list" class="posts-grid"></div>
+            </section>
+
+            <!-- 자기소개 섹션 -->
+            <section id="introductions" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-user-friends"></i> 자기소개</h2>
+                    <p>자신을 소개하고 동기들과 친해져요</p>
+                </div>
+
+                <div class="write-card">
+                    <h3>새 글 작성</h3>
+                    <form id="intro-form">
+                        <input type="text" id="intro-name" placeholder="이름" required>
+                        <input type="text" id="intro-department" placeholder="부서 (선택사항)">
+                        <textarea id="intro-content" placeholder="자기소개를 입력하세요..." rows="6" required></textarea>
+                        
+                        <div class="file-upload">
+                            <label for="intro-images" class="file-label">
+                                <i class="fas fa-camera"></i> 사진 첨부 (최대 5장)
+                            </label>
+                            <input type="file" id="intro-images" accept="image/*" multiple>
+                        </div>
+                        <div id="intro-preview" class="image-preview"></div>
+                        
+                        <button type="button" onclick="submitIntroduction()" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> 작성하기
+                        </button>
+                    </form>
+                </div>
+
+                <div id="introductions-list" class="posts-grid"></div>
+            </section>
+
+            <!-- 공지사항 섹션 -->
+            <section id="notices" class="section">
+                <div class="section-header">
+                    <h2><i class="fas fa-bullhorn"></i> 공지사항</h2>
+                    <p>중요한 안내사항을 확인하세요</p>
+                </div>
+
+                <div class="write-card">
+                    <h3>새 공지 작성</h3>
+                    <form id="notice-form">
+                        <input type="text" id="notice-title" placeholder="제목" required>
+                        <textarea id="notice-content" placeholder="공지사항 내용을 입력하세요..." rows="6" required></textarea>
+                        <input type="text" id="notice-author" placeholder="작성자" required>
+                        
+                        <button type="button" onclick="submitNotice()" class="btn-submit">
+                            <i class="fas fa-paper-plane"></i> 작성하기
+                        </button>
+                    </form>
+                </div>
+
+                <div id="notices-list" class="notices-list"></div>
+            </section>
+        </div>
     </main>
 
-    <footer>
+    <!-- 푸터 -->
+    <footer class="footer">
         <div class="container">
             <p>&copy; 2026 한진 신입사원 프리보딩. All rights reserved.</p>
         </div>
