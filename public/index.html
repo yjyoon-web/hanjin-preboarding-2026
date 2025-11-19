@@ -4,281 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>한진 2026 신입사원 프리보딩</title>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
+    <header>
         <div class="container">
-            <div class="nav-brand">
-                <img src="/images/hanjin-logo.png" alt="한진 로고" class="logo" onerror="this.style.display='none'">
+            <div class="header-content">
                 <h1>한진 2026 신입사원 프리보딩</h1>
             </div>
-            <div class="nav-user" id="navUser">
-                <button class="btn btn-primary" id="loginBtn">로그인</button>
-                <button class="btn btn-secondary" id="registerBtn">회원가입</button>
+            <nav>
+                <button class="nav-btn active" data-section="guestbook">방명록</button>
+                <button class="nav-btn" data-section="introductions">자기소개</button>
+                <button class="nav-btn" data-section="notices">공지사항</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- 방명록 섹션 -->
+        <section id="guestbook" class="section active">
+            <h2>방명록</h2>
+            <div class="write-form">
+                <input type="text" id="guestbook-name" placeholder="이름" required>
+                <textarea id="guestbook-message" placeholder="메시지를 입력하세요..." required></textarea>
+                <div class="file-input-wrapper">
+                    <label for="guestbook-images" class="file-label">
+                        📷 이미지 선택 (최대 5장)
+                    </label>
+                    <input type="file" id="guestbook-images" accept="image/*" multiple>
+                    <div id="guestbook-preview" class="image-preview"></div>
+                </div>
+                <button onclick="submitGuestbook()" class="submit-btn">작성하기</button>
             </div>
-        </div>
-    </nav>
+            <div id="guestbook-list" class="posts-list"></div>
+        </section>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <!-- Welcome Section (홈) -->
-            <section id="homeSection" class="section active">
-                <div class="welcome-banner">
-                    <h2>🎉 환영합니다!</h2>
-                    <p>한진 2026년 신입사원 프리보딩 홈페이지입니다</p>
+        <!-- 자기소개 섹션 -->
+        <section id="introductions" class="section">
+            <h2>자기소개</h2>
+            <div class="write-form">
+                <input type="text" id="intro-name" placeholder="이름" required>
+                <input type="text" id="intro-department" placeholder="부서 (선택사항)">
+                <textarea id="intro-content" placeholder="자기소개를 입력하세요..." required></textarea>
+                <div class="file-input-wrapper">
+                    <label for="intro-images" class="file-label">
+                        📷 이미지 선택 (최대 5장)
+                    </label>
+                    <input type="file" id="intro-images" accept="image/*" multiple>
+                    <div id="intro-preview" class="image-preview"></div>
                 </div>
+                <button onclick="submitIntroduction()" class="submit-btn">작성하기</button>
+            </div>
+            <div id="introductions-list" class="posts-list"></div>
+        </section>
 
-                <div class="cards-grid">
-                    <div class="card" onclick="showSection('noticesSection')">
-                        <div class="card-icon notices-icon">
-                            <i class="fas fa-bullhorn"></i>
-                        </div>
-                        <h3>공지사항</h3>
-                        <p>중요한 안내사항을 확인하세요</p>
-                    </div>
-
-                    <div class="card" onclick="showSection('guestbookSection')">
-                        <div class="card-icon guestbook-icon">
-                            <i class="fas fa-book"></i>
-                        </div>
-                        <h3>방명록</h3>
-                        <p>간단한 인사와 사진을 남겨보세요</p>
-                    </div>
-
-                    <div class="card" onclick="showSection('introductionsSection')">
-                        <div class="card-icon introductions-icon">
-                            <i class="fas fa-user-circle"></i>
-                        </div>
-                        <h3>자기소개</h3>
-                        <p>자신을 소개하고 동기들을 알아가세요</p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 공지사항 Section -->
-            <section id="noticesSection" class="section">
-                <div class="section-header">
-                    <h2><i class="fas fa-bullhorn"></i> 공지사항</h2>
-                    <button class="btn btn-primary" id="writeNoticeBtn" style="display: none;">
-                        <i class="fas fa-pen"></i> 공지 작성
-                    </button>
-                </div>
-                <div id="noticesList" class="posts-list"></div>
-            </section>
-
-            <!-- 방명록 Section -->
-            <section id="guestbookSection" class="section">
-                <div class="section-header">
-                    <h2><i class="fas fa-book"></i> 방명록</h2>
-                    <button class="btn btn-primary" id="writeGuestbookBtn" style="display: none;">
-                        <i class="fas fa-pen"></i> 방명록 작성
-                    </button>
-                </div>
-                <div id="guestbookList" class="posts-list"></div>
-            </section>
-
-            <!-- 자기소개 Section -->
-            <section id="introductionsSection" class="section">
-                <div class="section-header">
-                    <h2><i class="fas fa-user-circle"></i> 자기소개</h2>
-                    <button class="btn btn-primary" id="writeIntroductionBtn" style="display: none;">
-                        <i class="fas fa-pen"></i> 자기소개 작성
-                    </button>
-                </div>
-                <div id="introductionsList" class="posts-list"></div>
-            </section>
-        </div>
+        <!-- 공지사항 섹션 -->
+        <section id="notices" class="section">
+            <h2>공지사항</h2>
+            <div class="write-form">
+                <input type="text" id="notice-title" placeholder="제목" required>
+                <textarea id="notice-content" placeholder="공지사항 내용을 입력하세요..." required></textarea>
+                <input type="text" id="notice-author" placeholder="작성자" required>
+                <button onclick="submitNotice()" class="submit-btn">작성하기</button>
+            </div>
+            <div id="notices-list" class="posts-list"></div>
+        </section>
     </main>
 
-    <!-- Modal: 로그인 -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-sign-in-alt"></i> 로그인</h3>
-                <button class="close-btn" onclick="closeModal('loginModal')">&times;</button>
-            </div>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>아이디</label>
-                    <input type="text" name="username" required placeholder="아이디를 입력하세요">
-                </div>
-                <div class="form-group">
-                    <label>비밀번호</label>
-                    <input type="password" name="password" required placeholder="비밀번호를 입력하세요">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">로그인</button>
-            </form>
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 한진 신입사원 프리보딩. All rights reserved.</p>
         </div>
-    </div>
+    </footer>
 
-    <!-- Modal: 회원가입 -->
-    <div id="registerModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3><i class="fas fa-user-plus"></i> 회원가입</h3>
-                <button class="close-btn" onclick="closeModal('registerModal')">&times;</button>
-            </div>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label>아이디</label>
-                    <input type="text" name="username" required placeholder="사용할 아이디">
-                </div>
-                <div class="form-group">
-                    <label>비밀번호</label>
-                    <input type="password" name="password" required placeholder="비밀번호">
-                </div>
-                <div class="form-group">
-                    <label>이름</label>
-                    <input type="text" name="name" required placeholder="실명">
-                </div>
-                <div class="form-group">
-                    <label>이메일 (선택)</label>
-                    <input type="email" name="email" placeholder="example@hanjin.com">
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">회원가입</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: 공지사항 작성/수정 -->
-    <div id="noticeModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3 id="noticeModalTitle"><i class="fas fa-pen"></i> 공지사항 작성</h3>
-                <button class="close-btn" onclick="closeModal('noticeModal')">&times;</button>
-            </div>
-            <form id="noticeForm">
-                <input type="hidden" name="noticeId">
-                <div class="form-group">
-                    <label>제목</label>
-                    <input type="text" name="title" required placeholder="공지사항 제목">
-                </div>
-                <div class="form-group">
-                    <label>내용</label>
-                    <textarea name="content" required placeholder="공지사항 내용" rows="10"></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">작성 완료</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: 방명록 작성 (이미지 업로드) -->
-    <div id="guestbookModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3><i class="fas fa-pen"></i> 방명록 작성</h3>
-                <button class="close-btn" onclick="closeModal('guestbookModal')">&times;</button>
-            </div>
-            <form id="guestbookForm" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label>내용</label>
-                    <textarea name="content" required placeholder="방명록 내용을 작성하세요" rows="5"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>사진 첨부 (최대 5장, 각 5MB 이하)</label>
-                    <div class="file-upload-area">
-                        <input type="file" name="images" id="guestbookImages" accept="image/*" multiple>
-                        <label for="guestbookImages" class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>사진을 선택하거나 드래그하세요</span>
-                        </label>
-                    </div>
-                    <div id="guestbookPreview" class="image-preview-grid"></div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">작성 완료</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: 자기소개 작성/수정 (이미지 업로드) -->
-    <div id="introductionModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3 id="introductionModalTitle"><i class="fas fa-pen"></i> 자기소개 작성</h3>
-                <button class="close-btn" onclick="closeModal('introductionModal')">&times;</button>
-            </div>
-            <form id="introductionForm" enctype="multipart/form-data">
-                <input type="hidden" name="introductionId">
-                <div class="form-group">
-                    <label>제목</label>
-                    <input type="text" name="title" required placeholder="자기소개 제목">
-                </div>
-                <div class="form-group">
-                    <label>내용</label>
-                    <textarea name="content" required placeholder="자기소개 내용" rows="8"></textarea>
-                </div>
-                <div class="form-group">
-                    <label>사진 첨부 (최대 5장, 각 5MB 이하)</label>
-                    <div class="file-upload-area">
-                        <input type="file" name="images" id="introductionImages" accept="image/*" multiple>
-                        <label for="introductionImages" class="file-upload-label">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <span>사진을 선택하거나 드래그하세요</span>
-                        </label>
-                    </div>
-                    <div id="introductionPreview" class="image-preview-grid"></div>
-                    <div id="introductionExistingImages" class="image-preview-grid"></div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block">작성 완료</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modal: 공지사항 상세보기 -->
-    <div id="noticeDetailModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3 id="noticeDetailTitle"></h3>
-                <button class="close-btn" onclick="closeModal('noticeDetailModal')">&times;</button>
-            </div>
-            <div class="post-detail">
-                <div class="post-meta">
-                    <span><i class="fas fa-user"></i> <span id="noticeDetailAuthor"></span></span>
-                    <span><i class="fas fa-calendar"></i> <span id="noticeDetailDate"></span></span>
-                </div>
-                <div class="post-content" id="noticeDetailContent"></div>
-                <div class="post-actions" id="noticeDetailActions"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal: 자기소개 상세보기 -->
-    <div id="introductionDetailModal" class="modal">
-        <div class="modal-content modal-large">
-            <div class="modal-header">
-                <h3 id="introductionDetailTitle"></h3>
-                <button class="close-btn" onclick="closeModal('introductionDetailModal')">&times;</button>
-            </div>
-            <div class="post-detail">
-                <div class="post-meta">
-                    <span><i class="fas fa-user"></i> <span id="introductionDetailAuthor"></span></span>
-                    <span><i class="fas fa-calendar"></i> <span id="introductionDetailDate"></span></span>
-                </div>
-                <div id="introductionDetailImages" class="detail-image-gallery"></div>
-                <div class="post-content" id="introductionDetailContent"></div>
-                <div class="post-actions" id="introductionDetailActions"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Image Lightbox -->
-    <div id="imageLightbox" class="lightbox" onclick="closeLightbox()">
-        <span class="lightbox-close">&times;</span>
-        <img id="lightboxImage" src="" alt="">
-    </div>
-
-    <!-- Custom JS -->
     <script src="js/app.js"></script>
 </body>
 </html>
